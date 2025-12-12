@@ -1,1 +1,1 @@
-# currency-converter
+# Simple currency converter on Python
