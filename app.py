@@ -1,6 +1,6 @@
 import sys;
 import requests;
-
+from currency_converter import CurrencyConverter
 from PyQt6.QtCore import QSize, Qt;
 from PyQt6.QtWidgets import QApplication, QWidget, QPushButton, QMainWindow, QLineEdit, QLabel, QVBoxLayout;
 
@@ -8,6 +8,7 @@ from PyQt6.QtWidgets import QApplication, QWidget, QPushButton, QMainWindow, QLi
 url = 'https://api.exchangerate-api.com/v4/latest/USD';
 
 response = requests.get(url);
+conv = CurrencyConverter();
     
 if response.status_code == 200:
   data = response.json();
@@ -17,9 +18,9 @@ else:
 class App(QMainWindow):
   def __init__(self):
     super().__init__();
-    self.setWindowTitle("MyApp");
-    self.width = 400;
-    self.height = 150;
+    self.setWindowTitle("Конвертор валют");
+    self.width = 800;
+    self.height = 250;
     self.initUI();
 
   def initUI(self):
@@ -44,12 +45,12 @@ class App(QMainWindow):
     container.setLayout(layout);
 
     self.setCentralWidget(container);
-    self.setMinimumSize(QSize(250, 100));
+    self.setMinimumSize(QSize(300, 150));
     self.show();
 
   def on_click(self):
     srcValue = int(self.inputBox.text());
-    finValue = str(srcValue+0);
+    finValue = str(conv.convert(srcValue, 'USD', 'RUB'));
 
     self.label2.setText(f"Значение в российских рублях: {finValue}");
     print(f"итог: {finValue}");
